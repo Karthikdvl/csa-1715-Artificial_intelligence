@@ -1,0 +1,70 @@
+% Medical Diagnosis Expert System in Prolog
+
+% Define symptoms
+symptom('Flu').
+symptom('Yellowish eyes and skin').
+symptom('Dark color urine').
+symptom('Pale bowel movement').
+symptom('Fatigue').
+symptom('Vomiting').
+symptom('Fever').
+symptom('Pain in joints').
+symptom('Weakness').
+symptom('Stomach Pain').
+
+% Define treatments
+treatment('Flu', 'Drink hot water, avoid cold eatables.').
+treatment('Yellowish eyes and skin', 'Put eye drops, have healthy sleep, do not strain your eyes.').
+treatment('Dark color urine', 'Drink lots of water, juices, and eat fruits. Avoid alcohol consumption.').
+treatment('Pale bowel movement', 'Drink lots of water and exercise regularly.').
+treatment('Fatigue', 'Drink lots of water, juices, and eat fruits.').
+treatment('Vomiting', 'Drink salt and water.').
+treatment('Fever', 'Put a hot water cloth on the head and take crocin.').
+treatment('Pain in joints', 'Apply painkiller and take crocin.').
+treatment('Weakness', 'Drink salt and water, eat fruits.').
+treatment('Stomach Pain', 'Avoid outside food and eat fruits.').
+
+% Ask patient about symptoms
+input :-
+    dynamic(patient/2),
+    repeat,
+    symptom(X),
+    write('Does the patient have '), write(X), write('? '),
+    read(Y),
+    assert(patient(X, Y)),
+    \+ (X = 'Stomach Pain'),
+    \+ output.
+
+% Define diseases based on symptoms
+disease(hemochromatosis) :-
+    patient('Stomach Pain', yes),
+    patient('Pain in joints', yes),
+    patient('Weakness', yes),
+    patient('Dark color urine', yes),
+    patient('Yellowish eyes and skin', yes).
+disease(hepatitis_c) :-
+    \+ disease(hemochromatosis),
+    patient('Pain in joints', yes),
+    patient('Fever', yes),
+    patient('Fatigue', yes),
+    patient('Vomiting', yes),
+    patient('Pale bowel movement', yes).
+% Add more disease rules as needed...
+
+% Output possible diseases
+output :-
+    nl,
+    possible_diseases,
+    nl,
+    advice.
+
+possible_diseases :-
+    disease(X),
+    write('The patient may suffer from '), write(X), nl.
+
+advice :-
+    symptom(X),
+    patient(X, yes),
+    treatment(X, Y),
+    write(Y), nl,
+    \+ (X = 'Stomach Pain').

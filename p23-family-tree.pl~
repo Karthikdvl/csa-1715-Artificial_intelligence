@@ -1,0 +1,36 @@
+% Facts: Define parent relationships
+parent(somit, komal).
+parent(somit, manish).
+parent(komal, b).
+parent(komal, c).
+parent(manish, d).
+
+% Rules: Define other relationships
+male(somit).
+male(manish).
+male(b).
+male(c).
+male(d).
+
+female(komal).
+
+% Brother relationship: If they are male and share the same parent
+brother(X, Y) :-
+    parent(Z, X),
+    parent(Z, Y),
+    male(X),
+    male(Y),
+    X \= Y.
+
+% Query examples:
+% Is b a brother of c?
+% Query: brother(b, c).
+% Result: true
+
+% Is manish a brother of komal?
+% Query: brother(manish, komal).
+% Result: false (since they have different parents)
+
+% Is somit a brother of himself?
+% Query: brother(somit, somit).
+% Result: false (same person cannot be their own brother)
