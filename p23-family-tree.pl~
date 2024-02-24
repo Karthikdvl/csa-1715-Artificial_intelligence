@@ -1,36 +1,34 @@
-% Facts: Define parent relationships
-parent(somit, komal).
-parent(somit, manish).
-parent(komal, b).
-parent(komal, c).
-parent(manish, d).
+female(lakshmi).
+female(siri).
+female(githa).
+female(sitha).
+male(ravi).
+male(gopi).
+male(ram).
 
-% Rules: Define other relationships
-male(somit).
-male(manish).
-male(b).
-male(c).
-male(d).
+parent(lakshmi, siri).
+parent(lakshmi, githa).
+parent(lakshmi, sitha).
+parent(ravi, siri).
+parent(ravi, githa).
+parent(ravi, sitha).
+parent(siri, gopi).
+parent(siri, ram).
 
-female(komal).
+mother(M, C) :-
+    female(M), parent(M, C).
 
-% Brother relationship: If they are male and share the same parent
-brother(X, Y) :-
-    parent(Z, X),
-    parent(Z, Y),
-    male(X),
-    male(Y),
-    X \= Y.
+father(F, C) :-
+    male(F), parent(F, C).
 
-% Query examples:
-% Is b a brother of c?
-% Query: brother(b, c).
-% Result: true
+grandfather(G, C) :-
+    male(G), parent(G, X), parent(X, C).
 
-% Is manish a brother of komal?
-% Query: brother(manish, komal).
-% Result: false (since they have different parents)
+grandmother(G, C) :-
+    female(G), parent(G, X), parent(X, C).
 
-% Is somit a brother of himself?
-% Query: brother(somit, somit).
-% Result: false (same person cannot be their own brother)
+sister(S, P) :-
+    female(S), parent(X, S), parent(X, P).
+
+brother(B, P) :-
+    male(B), parent(X, B), parent(X, P).
